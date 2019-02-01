@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+{% block body_block %}
+  <h1>List of posts</h1>
+  <ul class="list-group">
+  {% for post in post_list %}
+  <div class="container">
+    <li class="list-group-item">
+      <a href="{% url 'blog:post_detail'  pk=post.pk %}">{{post.title}}</a>
+        <ul class="list-group">
+          <li class="list-group-item">Author:{{post.author}}</li>
+          <small><li class="list-group-item">Published on:{{post.published_date}}</li></small>
+        </ul>
+    </li>
+
+  </div>
+  {% endfor %}
+  </ul>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'blog/base.html' %}
+{% block body_block %}
+  <div class="container">
+    <h1>{{post.title}}</h1>
+  </div>
+  <div class="container">
+  </div>
+  <div class="">
+    <h3>Written by:{{post.author}}</h3>
+  </div>
+  <div class="container">
+
+  </div>
+  <div class="">
+    <h5>Published on: {{post.published_date}}</h5>
+  </div>
+
+  <p>{{post.text}}</p>
+
+  <p><a href="{% url 'blog:post_update' pk=post.pk%}">Click to Update</a></p>
+  <p><a href="{% url 'blog:post_delete_confirm' pk=post.pk%}">Click to Delete</a></p>
+
+  <div class="container">
+
+  <h3>Comments are:</h3>
+  {% for comment in post.get_comments %}
+    <p>{{comment.text}}<br>
+       <small>Added on: {{comment.create_date}}</small>
+      <a href="{% url 'blog:comment_delete_form' pk=comment.pk%}">Delete this comment</a>
+    </>
+  {% endfor %}
+  </div>
+
+  <div class="">
+    <p><a href="{% url 'blog:comment_add_form' pk=post.pk%}">Add comment</a></p>
+  </div>
+
+{% endblock %}

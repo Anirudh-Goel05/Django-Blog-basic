@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <title>Base Page</title>
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+
+          <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="navbar-brand" href="{%  url 'admin:index' %}">Admin</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{%  url 'blog:index_name' %}">Index Page</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{%  url 'blog:posts_list' %}">List of Posts</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{%  url 'blog:post_create' %}">Create a post</a>
+          </li>
+          </ul>
+        </div>
+      </nav>
+   </div>
+   <div class="container">
+     {% block body_block %}
+     {% endblock %}
+   </div>
+
+
+  </body>
+</html>

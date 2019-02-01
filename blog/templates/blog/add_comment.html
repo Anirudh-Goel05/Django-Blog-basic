@@ -1,0 +1,9 @@
+{% extends 'blog/base.html' %}
+{% block body_block %}
+    <h1>Add comment to the post</h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" name="" value="Add comment">
+    </form>
+{% endblock %}
