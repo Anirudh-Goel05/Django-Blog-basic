@@ -3,10 +3,13 @@ from .models import Post,Comment
 from django.views.generic import TemplateView,ListView,DetailView,FormView,UpdateView,DeleteView,CreateView
 from .forms import PostCreateForm,CommentCreateForm
 from django.urls import reverse,reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.utils import timezone
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.contrib.auth.decorators import user_passes_test
+
 # Create your views here.
 
 class Index(TemplateView):
@@ -29,6 +32,7 @@ class PostDetailView(DetailView):
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
 
 # @login_required
 class PostCreateView(LoginRequiredMixin,FormView):
@@ -60,13 +64,17 @@ def PostPublishConfirm(request,pk):
     return render(request,'blog/post_confirm_publish.html',context={'form':form})
 
 
-class PostUpdateView(LoginRequiredMixin,UpdateView):
+class PostUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     login_url = '/admin/login/'
 
     model = Post
     fields =['title','text',]
     template_name_suffix = '_update_form'
 
+    def test_func(self):
+        post = get_object_or_404(Post,pk=self.kwargs['pk'])
+        return self.request.user.id == post.author.id
+        
 class PostDeleteView(LoginRequiredMixin,DeleteView):
     login_url = 'admin/login/'
 
@@ -100,4 +108,7 @@ def delete_comment_from_post(request,pk):
         comment.delete()
         return redirect('blog:post_detail',pk=post_pk)
     else:
-        return render(request,'blog/delete_comment.html',context={'comment':comment})
+        if request.user.id == comment.author.id:
+            return render(request,'blog/delete_comment.html',context={'comment':comment})
+        else:
+            return HttpResponse('You cannot delete this comment as it was not posted by you')
