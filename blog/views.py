@@ -32,7 +32,7 @@ class PostDetailView(DetailView):
 
 # @login_required
 class PostCreateView(LoginRequiredMixin,FormView):
-    login_url = 'blog:posts_list'
+    login_url = '/admin/login/'
     # redirect_field_name = 'blog:posts_list'
 
     template_name = 'blog/post_create.html'
@@ -58,17 +58,17 @@ def PostPublishConfirm(request,pk):
     for key in form.fields.keys():
             form.fields[key].widget.attrs['readonly'] = True
     return render(request,'blog/post_confirm_publish.html',context={'form':form})
-    
+
 
 class PostUpdateView(LoginRequiredMixin,UpdateView):
-    login_url = 'blog:posts_list'
+    login_url = '/admin/login/'
 
     model = Post
     fields =['title','text',]
     template_name_suffix = '_update_form'
 
 class PostDeleteView(LoginRequiredMixin,DeleteView):
-    login_url = 'blog:posts_list'
+    login_url = 'admin/login/'
 
     model = Post
     success_url = reverse_lazy('blog:posts_list')
@@ -77,7 +77,7 @@ class PostDeleteView(LoginRequiredMixin,DeleteView):
 
 #####################################
 
-@login_required
+@login_required(login_url='/admin/login')
 def add_comment_to_post(request,pk):
     form=CommentCreateForm()
     post=get_object_or_404(Post, pk=pk)
@@ -90,7 +90,7 @@ def add_comment_to_post(request,pk):
         return redirect('blog:post_detail',pk=post.pk)
     return render(request,'blog/add_comment.html',context={'form':form})
 
-@login_required
+@login_required(login_url='/admin/login')
 def delete_comment_from_post(request,pk):
     comment = get_object_or_404(Comment,pk=pk)
     post_pk = comment.post.pk
