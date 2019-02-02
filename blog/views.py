@@ -74,14 +74,17 @@ class PostUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     def test_func(self):
         post = get_object_or_404(Post,pk=self.kwargs['pk'])
         return self.request.user.id == post.author.id
-        
-class PostDeleteView(LoginRequiredMixin,DeleteView):
+
+class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     login_url = 'admin/login/'
 
     model = Post
     success_url = reverse_lazy('blog:posts_list')
     template_name_suffix = '_confirm_delete'
 
+    def test_func(self):
+        post = get_object_or_404(Post,pk=self.kwargs['pk'])
+        return self.request.user.id == post.author.id
 
 #####################################
 
