@@ -26,6 +26,7 @@
   {% for comment in post.get_comments %}
     <p>{{comment.text}}<br>
        <small>Added on: {{comment.create_date}}</small>
+       <small>Added by: {{comment.author}}</small>
       <a href="{% url 'blog:comment_delete_form' pk=comment.pk%}">Delete this comment</a>
     </>
   {% endfor %}

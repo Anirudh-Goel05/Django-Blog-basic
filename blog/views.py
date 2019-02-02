@@ -81,11 +81,12 @@ class PostDeleteView(LoginRequiredMixin,DeleteView):
 def add_comment_to_post(request,pk):
     form=CommentCreateForm()
     post=get_object_or_404(Post, pk=pk)
-    
+
     if request.method == 'POST':
         form = CommentCreateForm(request.POST)
         comment=form.save(commit=False)
         comment.post = post
+        comment.author = request.user
         comment.save()
         return redirect('blog:post_detail',pk=post.pk)
     return render(request,'blog/add_comment.html',context={'form':form})

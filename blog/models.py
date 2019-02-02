@@ -23,6 +23,7 @@ class Post(models.Model):
         return reverse('blog:post_detail',kwargs={'pk':self.pk})
 
 class Comment(models.Model):
+    author = models.ForeignKey("auth.User",on_delete=models.CASCADE)
     post = models.ForeignKey('Post',related_name='comments',on_delete=models.CASCADE)
     text = models.TextField()
     create_date = models.DateTimeField(default=timezone.now())
