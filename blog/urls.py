@@ -13,5 +13,5 @@ urlpatterns= [
     path('add_comment/<int:pk>',views.add_comment_to_post,name='comment_add_form'),
     path('delete_comment/<int:pk>',views.delete_comment_from_post,name='comment_delete_form'),
     path('post_publish_confirm/<int:pk>',views.PostPublishConfirm,name='post_publish_confirm'),
-
+    
 ]
